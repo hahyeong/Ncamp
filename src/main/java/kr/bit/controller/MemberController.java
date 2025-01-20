@@ -78,8 +78,10 @@ public class MemberController {
     }
 
     @GetMapping("chk_pwd")
-    public String chk_pwd_modify(@ModelAttribute("chkPwdProcBean") Member chkPwdProcBean, Model model) {
+    public String chk_pwd_modify(@ModelAttribute("chkPwdProcBean") Member chkPwdProcBean, Model model, @RequestParam(value="fail", defaultValue = "false") boolean fail) {
         model.addAttribute("chkPwdProcBean", chkPwdProcBean);
+        model.addAttribute("fail", fail);
+
         return "chk_pwd";
     }
 
