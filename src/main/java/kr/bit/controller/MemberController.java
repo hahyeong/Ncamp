@@ -25,9 +25,10 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping("login")
-    public String login(@ModelAttribute("loginProcBean") Member loginProcBean, Model model, @RequestParam(value="fail", defaultValue = "false") boolean fail) {
+    public String login(@ModelAttribute("loginProcBean") Member loginProcBean, Model model, @RequestParam(value="fail", defaultValue = "false") boolean fail, @RequestParam(value="not_login", defaultValue = "false") boolean not_login) {
         model.addAttribute("loginProcBean", loginProcBean);
         model.addAttribute("fail", fail);
+        model.addAttribute("not_login", not_login);
 
         return "login";
     }

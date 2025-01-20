@@ -90,12 +90,6 @@
 <body>
 <div id="container">
     <h1 id="title">Identification</h1>
-<%--    <c:if test="${fail == true}">--%>
-<%--        <div class="alert alert-danger">--%>
-<%--            <h2>Wrong Password</h2>--%>
-<%--            <p style="margin: 0">Check your Password</p>--%>
-<%--        </div>--%>
-<%--    </c:if>--%>
     <form:form action="${root}chk_pwd_proc" method="post" modelAttribute="chkPwdProcBean">
         <div class="li">
             <label for="password">비밀번호 </label>
