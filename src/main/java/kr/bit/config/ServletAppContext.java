@@ -1,7 +1,6 @@
 package kr.bit.config;
 
 import kr.bit.bean.Member;
-import kr.bit.interceptor.MemberInterceptor;
 import kr.bit.mapper.MemberMapper;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,7 +13,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
 
@@ -86,11 +87,11 @@ public class ServletAppContext implements WebMvcConfigurer {
         return memberMapper;
     }
 
-    public void addInterceptors(InterceptorRegistry registry) {
-        WebMvcConfigurer.super.addInterceptors(registry);
-
-        MemberInterceptor memberInterceptor = new MemberInterceptor(loginBean);
-        InterceptorRegistration re = registry.addInterceptor(memberInterceptor);
-        re.addPathPatterns("/main", "/user_info", "/logout", "/chk_pwd", "chk_pwd_delete", "/modify", "/delete");
-    }
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        WebMvcConfigurer.super.addInterceptors(registry);
+//
+//        MemberInterceptor memberInterceptor = new MemberInterceptor(loginBean);
+//        InterceptorRegistration re = registry.addInterceptor(memberInterceptor);
+//        re.addPathPatterns("/user_info", "/logout", "/chk_pwd", "chk_pwd_delete", "/modify", "/delete");
+//    }
 }
