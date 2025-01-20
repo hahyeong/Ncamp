@@ -10,11 +10,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sign up</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery-3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+KR:wght@100..900&display=swap');
 
@@ -237,25 +238,53 @@
         </div>
     </form:form>
 </div>
-
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idCheckModal" tabindex="-1" aria-labelledby="idCheckModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">ID Double Check</h1>
+                <h5 class="modal-title" id="idCheckModalLabel">ID 중복 확인</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <h2 id="modal-text"></h2>
+            <div class="modal-body" id="modal-text">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
+    function chkExistId() {
+        let id = document.getElementById('id').value; // 입력된 ID 가져오기
+        if (id.trim().length === 0) {
+            document.getElementById('modal-text').innerText = 'ID를 입력하세요.';
+            new bootstrap.Modal(document.getElementById('idCheckModal')).show();
+            return;
+        }
+
+        // AJAX 요청
+        $.ajax({
+            url: '${root}chkExistId/' + id,
+            type: 'get',
+            dataType: 'text',
+            success: function (result) {
+                if (result.trim() === 'true') {
+                    document.getElementById('modal-text').innerText = '사용 가능한 ID입니다.';
+                    $('#existID').val('true');
+                } else {
+                    document.getElementById('modal-text').innerText = '사용할 수 없는 ID입니다.';
+                    $('#existID').val('false');
+                }
+                new bootstrap.Modal(document.getElementById('idCheckModal')).show();
+            },
+            error: function () {
+                document.getElementById('modal-text').innerText = 'ID 확인 중 오류가 발생했습니다.';
+                new bootstrap.Modal(document.getElementById('idCheckModal')).show();
+            }
+        });
+    }
+
     const domainList = document.querySelector
     ('#domain_list');
     const domainText = document.querySelector('#domain_text')
