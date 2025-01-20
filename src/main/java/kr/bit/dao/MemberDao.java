@@ -27,4 +27,7 @@ public class MemberDao {
         memberMapper.modifyMember(modifyProcBean);
     }
 
+    public void deleteAccount(String id) {
+        memberMapper.deleteAccount(id);
+    }
 }

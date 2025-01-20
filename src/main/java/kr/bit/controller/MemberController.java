@@ -85,6 +85,14 @@ public class MemberController {
         return "chk_pwd";
     }
 
+    @GetMapping("chk_pwd_delete")
+    public String chk_pwd_delete(@ModelAttribute("chkPwdDeleteProcBean") Member chkPwdDeleteProcBean, Model model, @RequestParam(value="fail", defaultValue = "false") boolean fail) {
+        model.addAttribute("chkPwdDeleteProcBean", chkPwdDeleteProcBean);
+        model.addAttribute("fail", fail);
+
+        return "chk_pwd_delete";
+    }
+
     @PostMapping("chk_pwd_proc")
     public String chk_pwd_proc(@ModelAttribute("chkPwdProcBean") Member chkPwdProcBean, HttpSession session) {
         Member member = (Member) session.getAttribute("loginBean");
@@ -95,6 +103,19 @@ public class MemberController {
             return "redirect:/modify";
         } else {
             return "redirect:/chk_pwd?fail=true";
+        }
+    }
+
+    @PostMapping("chk_pwd_delete_proc")
+    public String chk_pwd_delete_proc(@ModelAttribute("chkPwdDeleteProcBean") Member chkPwdDeleteProcBean, HttpSession session) {
+        Member member = (Member) session.getAttribute("loginBean");
+        String real_pwd = member.getPassword();
+        String input_pwd = chkPwdDeleteProcBean.getPassword();
+        System.out.println(real_pwd.equals(input_pwd));
+        if(real_pwd.equals(input_pwd)) {
+            return "redirect:/delete";
+        } else {
+            return "redirect:/chk_pwd_delete?fail=true";
         }
     }
 
@@ -114,6 +135,18 @@ public class MemberController {
         session.removeAttribute("loginBean");
         session.setAttribute("loginBean", modifyProcBean);
         return "redirect:/modify";
+    }
+
+    @GetMapping("delete")
+    public String delete() {
+        return "delete";
+    }
+
+    @PostMapping("delete_proc")
+    public String delete_proc(HttpSession session) {
+        Member member =(Member) session.getAttribute("loginBean");
+        memberService.deleteAccount(member.getId());
+        return "redirect:/login";
     }
 
     @InitBinder

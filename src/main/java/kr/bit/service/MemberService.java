@@ -37,4 +37,7 @@ public class MemberService {
         memberDao.modifyMember(modifyProcBean);
     }
 
+    public void deleteAccount(String id) {
+        memberDao.deleteAccount(id);
+    }
 }
